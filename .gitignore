@@ -33,3 +33,5 @@
 
 # Rider
 .idea/
+cmake-build-*
+build/
