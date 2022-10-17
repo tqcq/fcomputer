@@ -33,8 +33,10 @@ int InstructionSetGenerator::Run(const int argc, const char *argv[]) {
     return 1;
   }
 
-  for_each(operator_codes.begin(), operator_codes.end(), [](auto item){
-    std::cout << setw(10) << left << item.first << item.second  << setw(10)<< std::endl;
+  for_each(operator_codes.begin(), operator_codes.end(), [&](auto item){
+    std::cout << setw(10) << left << item.first
+              << setw(20) << left << item.second
+              << weights[item.first] << std::endl;
   });
   return 0;
 }
