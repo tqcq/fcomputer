@@ -1,24 +1,22 @@
-mov ax, 1
-mov sp,2032
+mov ax, rand
+mov sp,2048
 
 l1:
     test sp,0
-    jle  stackoverflow
     push  ax
+    jle  stackoverflow
     ldr   bx,[sp]
     test  ax,bx
-    jne   hlt
-    inc   ax
-    jmp   l1
+    mov   ax,rand
+    je    l1
 
-
-stackoverflow:
-    mov sp,11
-    jmp hlt
-ne:
-    mov sp 12
-    jmp hlt
-   
+fail:
+    mov dx 12
 hlt:
     jmp hlt
+
+stackoverflow:
+    mov dx,11
+    jmp hlt
+
 
