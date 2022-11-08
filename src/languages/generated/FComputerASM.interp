@@ -1,0 +1,30 @@
+token literal names:
+null
+null
+null
+'*'
+'/'
+'+'
+'-'
+null
+null
+null
+
+token symbolic names:
+null
+Expression
+OP
+MUL
+DIV
+ADD
+SUB
+NUM
+ID
+WS
+
+rule names:
+main
+
+
+atn:
+[4, 1, 9, 5, 2, 0, 7, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 3, 0, 2, 1, 0, 0, 0, 2, 3, 5, 1, 0, 0, 3, 1, 1, 0, 0, 0, 0]
