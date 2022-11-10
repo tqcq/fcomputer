@@ -1,0 +1,7 @@
+/**
+ * Created by Tqcq Ann on 11/9/22.
+**/
+#ifndef FCOMPUTER_INCLUDE_STRUTIL_H_
+#define FCOMPUTER_INCLUDE_STRUTIL_H_
+
+#endif //FCOMPUTER_INCLUDE_STRUTIL_H_
