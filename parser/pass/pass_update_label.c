@@ -5,6 +5,7 @@
 
 static int IsRelativeAddress(const char* opname) {
         static char opname_table[][100] = {
+                "store_pc",
                 "jmp",
                 "jl",
                 "je",

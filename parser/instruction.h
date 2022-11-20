@@ -41,7 +41,7 @@ static const char *InstructionToString(InstructionPtr instruction) {
     if (instruction->type == I_RI || instruction->type == I_RR) {
         int opcode = GetOpcode(instruction->opname);
         char value[256];
-        if (instruction->args[2].type == OPERAND_LABEL) {
+        if (instruction->args[2].type == OPERAND_LABEL || instruction->args[2].type == OPERAND_REG) {
             sprintf(value, "%s", instruction->args[2].data);
         } else  {
             sprintf(value, "%d", OperandToValue(instruction->args + 2));

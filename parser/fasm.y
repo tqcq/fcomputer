@@ -107,15 +107,24 @@ void yyerror(const char* msg) {
     return;
 }
 
+void PreAction() {
+    struct Operand *stack_size = ToOperand(OPERAND_IMM, 0, 0, "2048");
+    struct Operand *sp_reg= ToOperand(OPERAND_REG, 0, 0, "$sp");
+    emit_bin("move", sp_reg, stack_size);
+}
+
+void AfterAction() {
+    struct Operand *end_label= ToOperand(OPERAND_LABEL, 0, 0, "__system_end_loop");
+    emit_label("__system_end_loop");
+    emit_jmp("jmp", end_label);
+}
+
 int main(int argc, char* argv[]) {
-    const int program_size = 1000;
+    const int program_size = 10000;
+
+    PreAction();
     yyparse();
-    {
-        InstructionPtr in = GetProgram()->instruction_list[GetProgram()->len-1];
-        if (in && in->type == I_LABEL) {
-            PushInstruction(GetProgram(), NULL);
-        }
-    }
+    AfterAction();
 
     Optimize(GetProgram());
     int nop_instruction = 0;
@@ -173,13 +182,17 @@ int main(int argc, char* argv[]) {
                     continue;
                 }
                 int code = GenCode(GetProgram()->instruction_list[i]);
-                printf("0x%x, 0x%x, 0x%x, 0x%x%c\n",
+                if (i > 0) {
+                    puts(",");
+                }
+
+                printf("0x%x, 0x%x, 0x%x, 0x%x",
                                         (code >> 24) & 0xFF,
                                         (code >> 16) & 0xFF,
                                         (code >> 8)  & 0xFF,
-                                        code & 0xFF,
-                                        ", "[GetProgram()->len == i + 1]);
+                                        code & 0xFF);
         }
+        puts("");
     }
     return 0;
 }

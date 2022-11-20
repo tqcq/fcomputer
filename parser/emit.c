@@ -6,7 +6,7 @@
 
 void yyerror(const char *);
 
-static InstructionPtr  alloc_instruction(const char* opname, enum InstructionType type) {
+static InstructionPtr alloc_instruction(const char* opname, enum InstructionType type) {
     InstructionPtr in = (InstructionPtr)malloc(sizeof(struct Instruction));
     if (!in) {
         yyerror("alloc_instruction failed.");
@@ -87,9 +87,31 @@ void emit_bin(const char *opname, struct Operand *dst, struct Operand *src) {
 }
 
 void emit_loadimm(const char *opname, struct Operand *dst, struct Operand *imm) {
-    struct Operand *zero = ToOperand(OPERAND_IMM, 0, 0, "0");
-    emit_ri(opname, dst, zero, imm);
-    free(zero);
+    struct Operand *zero_reg = ToOperand(OPERAND_REG, 0, 0, "$0");
+
+    struct Operand *imm_hi = ToOperand(imm->type, 1, 0, imm->data);
+    struct Operand *imm_lo = ToOperand(imm->type, 0, 1, imm->data);
+    if (!strcmp("li", opname)) { // li reg,imm
+        int HasHi = (OperandToValue(imm) & 0xFFFF0000) || imm->type != OPERAND_IMM;
+        int HasLo = (OperandToValue(imm) & 0x0000FFFF) || imm->type != OPERAND_IMM;
+        if (HasHi) {
+            emit_loadimm("lui", dst, imm_hi);
+            if (HasLo) { // need merge
+                emit_ri("addi", dst, dst, imm_lo);
+            }
+        } else if (HasLo){ // only lower
+            emit_ri("addi", dst, zero_reg, imm_lo);
+        } else { // reset zero
+            emit_bin("move", dst, imm);
+        }
+    } else if (!strcmp("lui", opname)){ // lui reg,imm
+        emit_ri(opname, dst, zero_reg, imm);
+    } else {
+        yyerror("emit_loadimm failed.");
+    }
+    free(zero_reg);
+    free(imm_hi);
+    free(imm_lo);
 }
 
 void emit_branch(const char *opname, struct Operand *offset, struct Operand *base) {
@@ -135,7 +157,7 @@ void emit_jmp(const char *opname, struct Operand *address) {
 }
 
 void emit_call(const char *opname, struct Operand *offset, struct Operand *base) {
-    const char* label = unique_label("ret_label_");
+    const char* label = unique_label("__system_unique_ret_label_");
     struct Operand *ret_label = ToOperand(OPERAND_LABEL, 0, 0, label);
 
     struct Operand *zero = ToOperand(OPERAND_REG, 0, 0, "$zero");

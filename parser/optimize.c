@@ -43,6 +43,8 @@ typedef struct {
 DelayCycle DelayCycleTable[] = {
     {"default",         5, 0, 0, 0, 0},
 
+    {"add",             4, 0, 0, 0, 0},
+    {"addi",            4, 0, 0, 0, 0},
     {"push",            0, 2, 0, 5, 0},
     {"pop",             7, 2, 0, 0, 0},
     {"sw",              0, 0, 0, 5, 0},
