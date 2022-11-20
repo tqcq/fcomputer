@@ -37,9 +37,10 @@ cmake-build-*
 build/
 tmp/
 kk/
-*.bin
 
 # for lex,yacc
 y.tab.h
 y.tab.c
 lex.yy.c
+# for factorio computer asm
+*.bin

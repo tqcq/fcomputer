@@ -52,6 +52,8 @@ static struct OpCode opcode_table[] = {
     {"lw",    54},
     {"sw",    55},
 
+    {"rdrand",    56},
+    {"rdtsc",     57},
     {"store_pc",  58},
 
     {"test",      60},
@@ -74,6 +76,7 @@ static int GetOpcode(const char* opname) {
             return opcode_table[i].opcode;
         }
     }
+
     return -1;
 }
 

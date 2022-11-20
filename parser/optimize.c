@@ -202,18 +202,6 @@ void Optimize(Program *program) {
                 }
         }
 
-        /*
-        while (cur_pc - new_program.len - nop_len >= 6) {
-                PushInstruction(&new_program, &nop6);
-                nop_len += 5;
-        }
-
-        while (cur_pc - new_program.len - nop_len >= 4) {
-                PushInstruction(&new_program, &nop4);
-                nop_len += 3;
-        }
-         */
-
         while (cur_pc - new_program.len - nop_len >= 1) {
                 PushInstruction(&new_program, NULL);
         }

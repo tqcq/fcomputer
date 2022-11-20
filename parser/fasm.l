@@ -11,8 +11,8 @@ COMMENT1 ;[^\n\r]*
 WS       [ \t\b]+
 NEWLINE  [\n\r]
 REGISTER \$(zero|at|gp|sp|fp|ra|[kv][0-1]|a[0-3]|t[0-9]|s[0-7]|[0-9]+)
-HEX      0x[a-fA-F0-9]+
-NUMBER   [0-9]+
+HEX      [-+]?0x[a-fA-F0-9]+
+NUMBER   [-+]?[0-9]+
 LABEL    [a-zA-Z_][a-zA-Z_0-9]*
 OPERATOR [(),:]
 STRING   \"[^\n\"]*\"
@@ -27,6 +27,7 @@ LS_I     ("lw"|"sw")
 BIN_I    ("test"|"move")
 LOAD_IMM_I ("lui"|"li")
 BRANCH_I ("jl"|"je"|"jg"|"jle"|"jge"|"jne")
+READ_I   ("rdtsc"|"rdrand")
 JMP_I    ("jmp"|"j")
 CALL_I   ("call")
 RET_I    ("ret")
@@ -49,6 +50,7 @@ INC_DEC_I  ("inc"|"dec")
 {BIN_I}     { emit("BIN_I   \t", yytext); yylval.sData = strdup(yytext); return T_BIN_I; }
 {LOAD_IMM_I} { emit("LOAD_IMM_I   \t",yytext);  yylval.sData = strdup(yytext); return T_LOAD_IMM_I; }
 {BRANCH_I}  { emit("BRANCH_I\t", yytext); yylval.sData = strdup(yytext); return T_BRANCH_I; }
+{READ_I}    { emit("READ_I  \t", yytext); yylval.sData = strdup(yytext); return T_READ_I; }
 {JMP_I}     { emit("JMP_I   \t", yytext); yylval.sData = strdup(yytext); return T_JMP_I; }
 {CALL_I}    { emit("CALL_I  \t", yytext); yylval.sData = strdup(yytext); return T_CALL_I; }
 {RET_I}     { emit("RET_I   \t", yytext); yylval.sData = strdup(yytext); return T_RET_I; }

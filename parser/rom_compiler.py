@@ -57,7 +57,7 @@ def AddCol(data, signals_all, blueprint, x):
         signal = signals_all[i]
         const_combinator.set_signal(idx, signal, int(data[i]))
         if (idx == const_combinator.item_slot_count-1) or (i == len(data) - 1):
-            print(len(data), i)
+# print(len(data), i)
             blueprint.entities.append(const_combinator)
             if y == 2:
                 blueprint.add_circuit_connection("green", "con_{}_{}".format(x, y), "dec_{}_{}".format(x, y - 2), 1, 1)
@@ -73,8 +73,8 @@ def AddCol(data, signals_all, blueprint, x):
 def main(rom_path):
     blueprint = Blueprint()
     instructions = ReadBin(rom_path)
-    for x in instructions:
-        print("%#x" % x)
+# for x in instructions:
+#        print("%#x" % x)
 
     signals_all = []
     signals_all = AddToList(signals_all, signals.item)

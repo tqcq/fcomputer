@@ -14,6 +14,7 @@ void emit_loadsave(const char* opname, struct Operand* rd, struct Operand* offse
 void emit_bin(const char* opname, struct Operand* dst, struct Operand* src);
 void emit_loadimm(const char* opname, struct Operand* dst, struct Operand* imm);
 void emit_branch(const char* opname, struct Operand* offset, struct Operand* base);
+void emit_read(const char* opname, struct Operand* dst);
 void emit_jmp(const char* opname, struct Operand* address);
 void emit_call(const char* opname, struct Operand* offset, struct Operand* base);
 void emit_ret(const char* opname);

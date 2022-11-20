@@ -97,7 +97,7 @@ void emit_loadimm(const char *opname, struct Operand *dst, struct Operand *imm) 
         if (HasHi) {
             emit_loadimm("lui", dst, imm_hi);
             if (HasLo) { // need merge
-                emit_ri("addi", dst, dst, imm_lo);
+                emit_ri("ori", dst, dst, imm_lo);
             }
         } else if (HasLo){ // only lower
             emit_ri("addi", dst, zero_reg, imm_lo);
@@ -147,6 +147,17 @@ void emit_branch(const char *opname, struct Operand *offset, struct Operand *bas
     free(jne_flag);
     free(goto_flag);
 }
+
+void emit_read(const char* opname, struct Operand* dst) {
+    struct Operand *zero_reg = ToOperand(OPERAND_REG, 0, 0, "$0");
+    struct Operand *zero_imm = ToOperand(OPERAND_IMM, 0, 0, "0");
+
+    emit_ri(opname, dst, zero_reg, zero_imm);
+
+    free(zero_reg);
+    free(zero_imm);
+}
+
 
 void emit_jmp(const char *opname, struct Operand *address) {
     struct Operand *zero = ToOperand(OPERAND_IMM, 0, 0, "0");

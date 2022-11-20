@@ -35,6 +35,7 @@ extern Program program;
 %token <sData> T_BIN_I
 %token <sData> T_LOAD_IMM_I
 %token <sData> T_BRANCH_I
+%token <sData> T_READ_I
 %token <sData> T_JMP_I
 %token <sData> T_CALL_I
 %token <sData> T_RET_I
@@ -58,6 +59,7 @@ stmt
     | BIN_I_STMT
     | LOAD_IMM_I_STMT
     | BRANCH_I_STMT
+    | READ_I_STMT
     | JMP_I_STMT
     | CALL_I_STMT
     | RET_I_STMT
@@ -92,6 +94,7 @@ BRANCH_I_STMT
     :   T_BRANCH_I imm '(' register ')'                              { emit_branch($1, $2, $4); }
     |   T_BRANCH_I imm                                               { emit_branch($1, $2, ToOperand(OPERAND_REG, 0, 0, "$0")); }
     ;
+READ_I_STMT:     T_READ_I   register                                 { emit_read($1, $2) };
 JMP_I_STMT:      T_JMP_I    imm                                      { emit_jmp($1, $2); };
 CALL_I_STMT
     :   T_CALL_I   imm '(' register ')'                              { emit_call($1, $2, $4); }
