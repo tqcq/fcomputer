@@ -6,7 +6,7 @@ void yyerror(const char*);
 void emit(const char* msg, const char* data);
 %}
 
-COMMENT1 ;[^\n\r]*
+COMMENT1 [;#][^\n\r]*
 
 WS       [ \t\b]+
 NEWLINE  [\n\r]
@@ -31,6 +31,8 @@ READ_I   ("rdtsc"|"rdrand")
 JMP_I    ("jmp"|"j")
 CALL_I   ("call")
 RET_I    ("ret")
+JAL_I    ("jal")
+JR_I     ("jr")
 INC_DEC_I  ("inc"|"dec")
 
 %%
@@ -54,6 +56,8 @@ INC_DEC_I  ("inc"|"dec")
 {JMP_I}     { emit("JMP_I   \t", yytext); yylval.sData = strdup(yytext); return T_JMP_I; }
 {CALL_I}    { emit("CALL_I  \t", yytext); yylval.sData = strdup(yytext); return T_CALL_I; }
 {RET_I}     { emit("RET_I   \t", yytext); yylval.sData = strdup(yytext); return T_RET_I; }
+{JAL_I}     { emit("JAL_I   \t", yytext); yylval.sData = strdup(yytext); return T_JAL_I; }
+{JR_I}      { emit("JR_I    \t", yytext); yylval.sData = strdup(yytext); return T_JR_I; }
 {INC_DEC_I} { emit("INC_DEC \t", yytext); yylval.sData = strdup(yytext); return T_INC_DEC_I; }
 {LABEL}     { emit("Label   \t", yytext); yylval.sData = strdup(yytext); return T_LABEL; }
 
@@ -70,5 +74,5 @@ int main(int argc, char* argv[]) {
 */
 
 void emit(const char* msg, const char* data) {
-    // printf("%s:\t%s\n", msg, data);
+    //printf("%s:\t%s\n", msg, data);
 }

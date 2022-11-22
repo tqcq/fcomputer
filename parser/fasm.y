@@ -39,6 +39,8 @@ extern Program program;
 %token <sData> T_JMP_I
 %token <sData> T_CALL_I
 %token <sData> T_RET_I
+%token <sData> T_JAL_I
+%token <sData> T_JR_I
 %token <sData> T_INC_DEC_I
 
 %type  <ptrOperand> imm register
@@ -63,6 +65,8 @@ stmt
     | JMP_I_STMT
     | CALL_I_STMT
     | RET_I_STMT
+    | JAL_I_STMT
+    | JR_I_STMT
     | INC_DEC_I_STMT
     ;
 
@@ -101,6 +105,8 @@ CALL_I_STMT
     |   T_CALL_I   imm                                               { emit_call($1, $2, ToOperand(OPERAND_REG,   0, 0, "$0")); }
     ;
 RET_I_STMT:      T_RET_I                                             { emit_ret($1); };
+JAL_I_STMT:      T_JAL_I  imm                                          { emit_jal($1, $2); };
+JR_I_STMT:       T_JR_I   register                                     { emit_jr($1, $2); };
 INC_DEC_I_STMT:  T_INC_DEC_I register                                { emit_inc_dec($1, $2); };
 
 %%

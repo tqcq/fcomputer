@@ -202,6 +202,31 @@ void emit_ret(const char *opname) {
     free(at);
 }
 
+void emit_jal(const char* opname, struct Operand* jmp_label) {
+    const char* jr_label = unique_label("__system_unique_jr_label_");
+    struct Operand *ret_label = ToOperand(OPERAND_LABEL, 0, 0, jr_label);
+
+    struct Operand *zero = ToOperand(OPERAND_REG, 0, 0, "$zero");
+    struct Operand *ra= ToOperand(OPERAND_REG, 0, 0, "$ra");
+
+    emit_ri("store_pc", ra, zero, ret_label);
+    emit_jmp("jmp", jmp_label);
+    emit_label(jr_label);
+
+    free(ret_label);
+    free(zero);
+    free(ra);
+}
+void emit_jr(const char* opname, struct Operand* ret_reg) {
+    struct Operand *zero = ToOperand(OPERAND_IMM, 0, 0, "0");
+    struct Operand *at= ToOperand(OPERAND_REG, 0, 0, "$ra");
+
+    emit_branch("goto", zero, at);
+
+    free(zero);
+    free(at);
+}
+
 void emit_inc_dec(const char *opname, struct Operand *dst) {
     struct Operand* one = ToOperand(OPERAND_IMM, 0, 0, "1");
     struct Operand* inv = ToOperand(OPERAND_IMM, 0, 0, "-1");

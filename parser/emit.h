@@ -18,6 +18,8 @@ void emit_read(const char* opname, struct Operand* dst);
 void emit_jmp(const char* opname, struct Operand* address);
 void emit_call(const char* opname, struct Operand* offset, struct Operand* base);
 void emit_ret(const char* opname);
+void emit_jal(const char* opname, struct Operand* jmp_label);
+void emit_jr(const char* opname, struct Operand* ret_reg);
 void emit_inc_dec(const char* opname, struct Operand* dst);
 
 #endif // FCOMPUTER_PARSER_EMIT_H_
